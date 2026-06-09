@@ -1,0 +1,40 @@
+version: "2"
+linters:
+  exclusions:
+    presets:
+      # More information: https://golangci-lint.run/docs/linters/false-positives/
+      - comments
+
+      # More information: https://golangci-lint.run/docs/linters/false-positives/
+      - common-false-positives
+
+      # More information: https://golangci-lint.run/docs/linters/false-positives/
+      - std-error-handling
+  enable:
+    # Errcheck is a program for checking for unchecked errors in Go code.
+    - errcheck
+
+    # Vet examines Go source code and reports suspicious constructs.
+    - govet
+
+    # Detects when assignments to existing variables are not used.
+    - ineffassign
+
+    # It's a set of rules from staticcheck. See https://staticcheck.io/
+    - staticcheck
+
+    # Checks Go code for unused constants, variables, functions and types.
+    - unused
+
+    # Fast, configurable, extensible, flexible, and beautiful linter for Go.
+    # Drop-in replacement of golint.
+    - revive
+formatters:
+  settings:
+    gofmt:
+      simplify: false
+      rewrite-rules:
+        - pattern: "interface{}"
+          replacement: "any"
+        - pattern: "a[b:len(a)]"
+          replacement: "a[b:]"

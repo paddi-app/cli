@@ -1,0 +1,71 @@
+version: 2
+
+project_name: paddi
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - binary: paddi
+    main: .
+    env:
+      - CGO_ENABLED=0
+      - PADDI_API_BASE=https://api.paddi.app
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+nfpms:
+  - package_name: paddi
+    formats: [deb, rpm, apk]
+    maintainer: Paddi Team <hello@paddi.app>
+    homepage: https://github.com/paddi-app/cli
+    description: Paddi from the command line
+    license: MIT
+
+brews:
+  - name: paddi
+    repository:
+      owner: paddi-app
+      name: tap
+      git:
+        url: "git@github.com:paddi-app/homebrew-tap.git"
+        private_key: "{{ .Env.TAP_DEPLOY_KEY }}"
+    directory: Formula
+    homepage: https://github.com/paddi-app/cli
+    description: Paddi from the command line
+    license: MIT
+    test: |
+      system "#{bin}/paddi", "--version"
+    # Skip pushing the formula until the tap repo + deploy key are set up,
+    # so a missing secret never breaks the release itself.
+    skip_upload: "{{ if .Env.TAP_DEPLOY_KEY }}false{{ else }}true{{ end }}"
+
+release:
+  draft: false
+  prerelease: auto
