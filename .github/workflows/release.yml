@@ -46,6 +46,7 @@ jobs:
 
   pypi:
     runs-on: ubuntu-latest
+    environment: pypi # must match the environment name in the PyPI trusted publisher config
     permissions:
       contents: read
       id-token: write # PyPI trusted publishing
