@@ -7,5 +7,4 @@
 
 ## Running and Building
 
-- Run the binary with: `cargo run -- <args>`
-- Build the binary with: `cargo build --release`
+- Build the binary with: `just build` or `go build -o ./bin/paddi`
