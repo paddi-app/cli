@@ -14,11 +14,9 @@ brew install paddi
 ### pip / uv
 
 ```bash
-pip install paddi
+pip install paddi-cli
 # or
-uv tool install paddi
-# or run without installing
-uvx paddi
+uv tool install paddi-cli
 ```
 
 ### npm / bunx

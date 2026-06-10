@@ -59,7 +59,8 @@ jobs:
       - name: Build wheels
         run: |
           pipx run go-to-wheel . \
-            --name paddi \
+            --name paddi-cli \
+            --entry-point paddi \
             --version "${GITHUB_REF_NAME#v}" \
             --set-version-var main.version \
             --ldflags "-X github.com/paddi-app/paddi/internal/config.defaultAPIBase=https://api.paddi.app" \
