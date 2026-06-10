@@ -11,6 +11,9 @@ permissions:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
+    env:
+      # secrets context is unavailable in step-level `if`, so hoist the check here
+      HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -35,7 +38,7 @@ jobs:
       # Builds npm packages from the goreleaser dist/ artifacts
       # (per-platform packages + a root package with optionalDependencies).
       - name: Publish to npm
-        if: secrets.NPM_TOKEN != ''
+        if: env.HAS_NPM_TOKEN == 'true'
         uses: evg4b/goreleaser-npm-publisher-action@v1.2.0
         with:
           prefix: "@paddi-app"
