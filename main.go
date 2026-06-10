@@ -21,7 +21,7 @@ const (
 	exitServer    = 3
 )
 
-var version = "0.2.1"
+var version = "0.2.2"
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
