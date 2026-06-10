@@ -7,7 +7,7 @@ import (
 
 	"github.com/urfave/cli/v3"
 
-	"github.com/paddi-app/cli/internal/output"
+	"github.com/paddi-app/paddi/internal/output"
 )
 
 func sourceCommand() *cli.Command {

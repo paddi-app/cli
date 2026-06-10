@@ -7,9 +7,9 @@ import (
 
 	"github.com/urfave/cli/v3"
 
-	"github.com/paddi-app/cli/internal/api"
-	"github.com/paddi-app/cli/internal/config"
-	"github.com/paddi-app/cli/internal/credentials"
+	"github.com/paddi-app/paddi/internal/api"
+	"github.com/paddi-app/paddi/internal/config"
+	"github.com/paddi-app/paddi/internal/credentials"
 )
 
 type globalOptions struct {

@@ -10,9 +10,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/paddi-app/cli/internal/api"
-	"github.com/paddi-app/cli/internal/commands"
-	"github.com/paddi-app/cli/internal/credentials"
+	"github.com/paddi-app/paddi/internal/api"
+	"github.com/paddi-app/paddi/internal/commands"
+	"github.com/paddi-app/paddi/internal/credentials"
 )
 
 const (
@@ -21,8 +21,7 @@ const (
 	exitServer    = 3
 )
 
-// version is injected at build time via -ldflags "-X main.version=...".
-var version = "dev"
+var version = "0.1.0"
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)

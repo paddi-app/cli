@@ -8,10 +8,10 @@ import (
 
 	"github.com/urfave/cli/v3"
 
-	"github.com/paddi-app/cli/internal/api"
-	"github.com/paddi-app/cli/internal/config"
-	"github.com/paddi-app/cli/internal/output"
-	"github.com/paddi-app/cli/internal/prompt"
+	"github.com/paddi-app/paddi/internal/api"
+	"github.com/paddi-app/paddi/internal/config"
+	"github.com/paddi-app/paddi/internal/output"
+	"github.com/paddi-app/paddi/internal/prompt"
 )
 
 func projectCommand() *cli.Command {

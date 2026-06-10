@@ -28,3 +28,44 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAP_DEPLOY_KEY: ${{ secrets.TAP_DEPLOY_KEY }}
+          # PAT with repo write on paddi-app/scoop-bucket and the
+          # paddi-app/winget-pkgs fork; missing -> scoop/winget are skipped.
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+      # Builds npm packages from the goreleaser dist/ artifacts
+      # (per-platform packages + a root package with optionalDependencies).
+      - name: Publish to npm
+        if: secrets.NPM_TOKEN != ''
+        uses: evg4b/goreleaser-npm-publisher-action@v1.2.0
+        with:
+          prefix: "@paddi-app"
+          token: ${{ secrets.NPM_TOKEN }}
+
+  pypi:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Build wheels
+        run: |
+          pipx run go-to-wheel . \
+            --name paddi \
+            --version "${GITHUB_REF_NAME#v}" \
+            --set-version-var main.version \
+            --ldflags "-X github.com/paddi-app/paddi/internal/config.defaultAPIBase=https://api.paddi.app" \
+            --description "Paddi CLI" \
+            --license MIT \
+            --url https://github.com/paddi-app/paddi \
+            --readme README.md \
+            --output-dir wheels
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: wheels

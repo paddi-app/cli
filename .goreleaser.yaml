@@ -11,9 +11,8 @@ builds:
     main: .
     env:
       - CGO_ENABLED=0
-      - PADDI_API_BASE=https://api.paddi.app
     ldflags:
-      - -s -w -X main.version={{ .Version }}
+      - -s -w -X github.com/paddi-app/paddi/internal/config.defaultAPIBase=https://api.paddi.app
     goos:
       - linux
       - darwin
@@ -44,7 +43,7 @@ nfpms:
   - package_name: paddi
     formats: [deb, rpm, apk]
     maintainer: Paddi Team <hello@paddi.app>
-    homepage: https://github.com/paddi-app/cli
+    homepage: https://github.com/paddi-app/paddi
     description: Paddi from the command line
     license: MIT
 
@@ -57,7 +56,7 @@ brews:
         url: "git@github.com:paddi-app/homebrew-tap.git"
         private_key: "{{ .Env.TAP_DEPLOY_KEY }}"
     directory: Formula
-    homepage: https://github.com/paddi-app/cli
+    homepage: https://github.com/paddi-app/paddi
     description: Paddi from the command line
     license: MIT
     test: |
@@ -65,6 +64,42 @@ brews:
     # Skip pushing the formula until the tap repo + deploy key are set up,
     # so a missing secret never breaks the release itself.
     skip_upload: "{{ if .Env.TAP_DEPLOY_KEY }}false{{ else }}true{{ end }}"
+
+scoops:
+  - name: paddi
+    repository:
+      owner: paddi-app
+      name: scoop-bucket
+      token: "{{ .Env.GH_PAT }}"
+    directory: bucket
+    homepage: https://github.com/paddi-app/paddi
+    description: Paddi from the command line
+    license: MIT
+    # Same guard as brews: no PAT configured -> skip, don't fail the release.
+    skip_upload: "{{ if .Env.GH_PAT }}false{{ else }}true{{ end }}"
+
+winget:
+  - name: paddi
+    package_identifier: Paddi.Paddi
+    publisher: Paddi
+    publisher_url: https://github.com/paddi-app
+    publisher_support_url: https://github.com/paddi-app/paddi/issues
+    homepage: https://github.com/paddi-app/paddi
+    short_description: Paddi from the command line
+    license: MIT
+    repository:
+      owner: paddi-app
+      name: winget-pkgs
+      branch: "paddi-{{ .Version }}"
+      token: "{{ .Env.GH_PAT }}"
+      pull_request:
+        enabled: true
+        draft: true
+        base:
+          owner: microsoft
+          name: winget-pkgs
+          branch: master
+    skip_upload: "{{ if .Env.GH_PAT }}false{{ else }}true{{ end }}"
 
 release:
   draft: false

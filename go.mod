@@ -1,4 +1,4 @@
-module github.com/paddi-app/cli
+module github.com/paddi-app/paddi
 
 go 1.26.4
 
